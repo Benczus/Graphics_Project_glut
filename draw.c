@@ -1,14 +1,14 @@
 #include "draw.h"
 #include <GL/glut.h>
-#include <stdio.h>
-#include <math.h>
+#include <SOIL/SOIL.h>
+
 double wind_speed=0;
 double skybox_size = 1000;
 double skybox_half= 500;
 double UNIT=50;
 GLuint displayList1;
 GLuint displayList2;
-
+typedef GLubyte Pixel;
 
 void draw_model(const struct Model* model)
 {
@@ -102,29 +102,30 @@ void draw_ground(int ground) {
 	}
 	glEnd();
 }
-void draw_wall(int ground, int x, int y){
+
+void draw_wall(int ground, int x, int y) {
 	glBindTexture(GL_TEXTURE_2D, ground);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0, 0.0);
-	glNormal3f(0, -1, 0);
-	glVertex3f(x, 0, y);
-
-	glTexCoord2f(0.0, 1.0);
-	glNormal3f(0, -1, 0);
-	glVertex3f(x , 0, y+50);
-
-	glTexCoord2f(1.0, 1.0);
-	glNormal3f(0, -1, 0);
-	glVertex3f(x+50, 0, y+50);
-
-	glTexCoord2f(1.0, 0.0);
-	glNormal3f(0, -1, 0);
-	glVertex3f(x+50, 0, y);
-
-	glEnd();
+//	glBegin(GL_QUADS);
+//	glTexCoord2f(0.0, 0.0);
+//	glNormal3f(0, -1, 0);
+//	glVertex3f(x, 0, y);
+//
+//	glTexCoord2f(0.0, 1.0);
+//	glNormal3f(0, -1, 0);
+//	glVertex3f(x , 0, y+50);
+//
+//	glTexCoord2f(1.0, 1.0);
+//	glNormal3f(0, -1, 0);
+//	glVertex3f(x+50, 0, y+50);
+//
+//	glTexCoord2f(1.0, 0.0);
+//	glNormal3f(0, -1, 0);
+//	glVertex3f(x+50, 0, y);
+//
+//	glEnd();
 
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0);
@@ -183,39 +184,40 @@ void draw_wall(int ground, int x, int y){
 
     glEnd();
 
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0.0, 0.0);
+//    glNormal3f(0, -1, 0);
+//    glVertex3f(x, 100, y);
+//
+//    glTexCoord2f(0.0, 1.0);
+//    glNormal3f(0, -1, 0);
+//    glVertex3f(x+50, 100,y);
+//
+//    glTexCoord2f(1.0, 1.0);
+//    glNormal3f(0, -1, 0);
+//    glVertex3f(x+50, 100, y+50);
+//
+//    glTexCoord2f(1.0, 0.0);
+//    glNormal3f(0, -1, 0);
+//    glVertex3f(x, 100, y+50);
+//
+//    glEnd();
+
+
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(x, 100, y);
-
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(x+50, 100,y);
-
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(x+50, 100, y+50);
-
     glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(x, 100, y+50);
-
-    glEnd();
-
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 0.0);
     glNormal3f(0, -1, 0);
     glVertex3f(x, 0,y+50);
+    glTexCoord2f(0.0, 0.0);
 
-    glTexCoord2f(0.0, 1.0);
     glNormal3f(0, -1, 0);
     glVertex3f(x+50, 0,y+50);
+    glTexCoord2f(0.0, 1.0);
 
-    glTexCoord2f(1.0, 1.0);
     glNormal3f(0, -1, 0);
     glVertex3f(x+50, 100, y+50);
+    glTexCoord2f(1.0, 1.0);
 
-    glTexCoord2f(1.0, 0.0);
     glNormal3f(0, -1, 0);
     glVertex3f(x, 100, y+50);
 
@@ -226,8 +228,9 @@ void draw_wall(int ground, int x, int y){
 
 
 }
-void draw_skybox_left(Skybox skybox) {
-	glBindTexture(GL_TEXTURE_2D, skybox.left);
+
+void draw_skybox(int texture) {
+    glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0, 1.0);
@@ -239,65 +242,63 @@ void draw_skybox_left(Skybox skybox) {
 	glTexCoord2f(0.0, 1.0);
 	glVertex3f(-skybox_size, 0, skybox_size);
 	glEnd();
-}
-void draw_skybox_right(Skybox skybox) {
-	glBindTexture(GL_TEXTURE_2D, skybox.right);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(skybox_size, 0, skybox_size);
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(skybox_size, skybox_half, skybox_size);
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(skybox_size, skybox_half, -skybox_size);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(skybox_size, 0, -skybox_size);
-	glEnd();
-}
-void draw_skybox_front(Skybox skybox) {
-	glBindTexture(GL_TEXTURE_2D, skybox.front);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-skybox_size, 0, -skybox_size);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(skybox_size, 0, -skybox_size);
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(skybox_size, skybox_half, -skybox_size);
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-skybox_size, skybox_half, -skybox_size);
-	glEnd();
-}
-void draw_skybox_back(Skybox skybox) {
-	glBindTexture(GL_TEXTURE_2D, skybox.back);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(-skybox_size, 0, skybox_size);
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(-skybox_size, skybox_half, skybox_size);
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(skybox_size, skybox_half, skybox_size);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(skybox_size, 0, skybox_size);
-	glEnd();
-}
-void draw_skybox_top(Skybox skybox) {
-	glBindTexture(GL_TEXTURE_2D, skybox.back);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(skybox_size, skybox_half, skybox_size);
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(skybox_size, skybox_half, -skybox_size);
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-skybox_size, skybox_half, -skybox_size);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-skybox_size, skybox_half, skybox_size);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f(skybox_size, 0, skybox_size);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f(skybox_size, skybox_half, skybox_size);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f(skybox_size, skybox_half, -skybox_size);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(skybox_size, 0, -skybox_size);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(-skybox_size, 0, -skybox_size);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f(skybox_size, 0, -skybox_size);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f(skybox_size, skybox_half, -skybox_size);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f(-skybox_size, skybox_half, -skybox_size);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f(-skybox_size, 0, skybox_size);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f(-skybox_size, skybox_half, skybox_size);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f(skybox_size, skybox_half, skybox_size);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(skybox_size, 0, skybox_size);
+    glEnd();
 
 
-	glEnd();
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_EXT_CLAMP_TO_EDGE);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f(skybox_size, skybox_half, skybox_size);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f(skybox_size, skybox_half, -skybox_size);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f(-skybox_size, skybox_half, -skybox_size);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(-skybox_size, skybox_half, skybox_size);
+
+
+    glEnd();
 }
+
 void draw_environment(World world) {
 	glEnable(GL_TEXTURE_2D);
     displayList1 = glGenLists(1);
@@ -313,6 +314,7 @@ void draw_environment(World world) {
 		    glBindTexture(GL_TEXTURE_2D, world.windmill1.texture);
     		draw_model(&world.windmill1.model);
 		glEndList();
+
 		displayList2 = glGenLists(1);
 		glNewList(displayList2, GL_COMPILE);
             glRotatef(180,1,0,0);
@@ -323,9 +325,10 @@ void draw_environment(World world) {
 		glBindTexture(GL_TEXTURE_2D, world.windmill2.texture);
 		draw_model(&world.windmill2.model);
 		glEndList();
+
 	draw_ground(world.ground);
 
-    draw_labirynth(world.ground);
+    draw_dungeon(world.walltexture);
 
 	GLfloat zeros[] = { 0, 0, 0 };
 	GLfloat ones[] = { 1, 1, 1 };
@@ -333,23 +336,13 @@ void draw_environment(World world) {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, zeros);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, ones);
 
-	draw_skybox_left(world.skybox);
-	draw_skybox_right(world.skybox);
-	draw_skybox_front(world.skybox);
-	draw_skybox_back(world.skybox);
-	draw_skybox_top(world.skybox);
+    draw_skybox(world.skybox);
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, world.material_ambient);
 
 	glDisable(GL_TEXTURE_2D);
 }
-void load_skybox(Skybox* skybox) {
-	skybox->front = load_texture("textures//darkcave.jpg");
-	skybox->left = load_texture("textures//darkcave.jpg");
-	skybox->right = load_texture("textures//darkcave.jpg");
-	skybox->back = load_texture("textures//darkcave.jpg");
 
-}
 
 
 void draw_teapot_for_light(){
@@ -372,7 +365,8 @@ void draw_entities(World world) {
     draw_teapot_for_light();
 	glDisable(GL_TEXTURE_2D);
 }
-void draw_labirynth	(int ground){
+
+void draw_dungeon(int ground) {
 draw_wall(ground, UNIT, 0);
 //starter area
     draw_wall(ground, UNIT, -UNIT);
@@ -411,6 +405,30 @@ void draw_vertical_wall(int ground, int x, int y1, int y2){
 
 }
 
+GLuint load_texture(const char *filename) {
+    GLuint texture_name;
+    Pixel *image;
+    glGenTextures(1, &texture_name);
+
+    int width;
+    int height;
+
+    image = (Pixel *) SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGBA);
+
+    glBindTexture(GL_TEXTURE_2D, texture_name);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (Pixel *) image);
+
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    SOIL_free_image_data(image);
+
+    return texture_name;
+}
 
 
 

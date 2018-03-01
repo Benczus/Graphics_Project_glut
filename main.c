@@ -1,9 +1,7 @@
 #include <GL/glut.h>
-#include <math.h>
 #include "model.h"
 #include "draw.h"
 #include "camera.h"
-#include "SOIL/SOIL.h"
 
 #define GROUND_LEVEL 20
 
@@ -29,7 +27,7 @@ struct Action
 struct Action action;
 int time;
 
-typedef GLubyte Pixel;
+
 int WINDOW_WIDTH;
 int WINDOW_HEIGHT;
 
@@ -190,6 +188,15 @@ void reshape(GLsizei width, GLsizei height) {
 /*
 * Draws the help menu
 */
+
+void init_entities(World *world) {
+    //TODO
+
+    world->ground = load_texture("textures//groundtexture.png");
+    world->walltexture = load_texture("textures//walltex.png");
+    world->skybox = load_texture("textures//darkcave2.jpg");
+}
+
 void draw_help() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -348,30 +355,6 @@ void idle()
 	glutPostRedisplay();
 }
 
-GLuint load_texture(const char* filename) {
-	GLuint texture_name;
-	Pixel* image;
-	glGenTextures(1, &texture_name);
-
-	int width;
-	int height;
-
-	image = (Pixel*)SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGBA);
-
-	glBindTexture(GL_TEXTURE_2D, texture_name);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (Pixel*)image);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-	SOIL_free_image_data(image);
-
-	return texture_name;
-}
 void set_callbacks() {
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);

@@ -67,15 +67,12 @@ typedef struct {
 	float material_ambient[4];
 }Entity;
 
-typedef struct {
-	int front, back, left, right, top;
-}Skybox;
 
 typedef struct {
 	int ground;
-	Skybox skybox;
+    int skybox;
 	Entity windmill1, windmill2 ;
-
+    int walltexture;
 	float global_ambient[4];
 	float material_ambient[4];
 	float diffuse_light_emission[4];

@@ -1,6 +1,5 @@
 #include "model.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -447,9 +446,4 @@ void scale_model(struct Model* model, double sx, double sy, double sz)
 }
 
 
-void init_entities(World* world) {
-	//TODO
-	
-	world->ground = load_texture("textures//groundtexture.png");
-	load_skybox(&world->skybox);
-}
+
