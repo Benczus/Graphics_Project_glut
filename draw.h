@@ -42,7 +42,7 @@ void draw_environment(World world);
 * Adds texture to the skybox
 */
 
-
+void draw_start_area(int ground);
 
 void draw_entities(World world);
 

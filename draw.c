@@ -367,8 +367,52 @@ void draw_entities(World world) {
 }
 
 void draw_dungeon(int ground) {
-draw_wall(ground, UNIT, 0);
-//starter area
+
+
+    draw_start_area(ground);
+
+    draw_vertical_wall(ground, 1, 1, 3);
+
+    draw_horizontal_wall(ground, 0, -5, 3);
+    draw_vertical_wall(ground, -5, 2, -2);
+    draw_horizontal_wall(ground, 5, -5, -5);
+    draw_vertical_wall(ground, -7, -5, 3);
+
+
+}
+
+void draw_horizontal_wall(int ground, int x1, int x2, int y) {
+
+
+    if (x1 > x2)
+        for (int i = x2; i <= x1; i++) {
+            draw_wall(ground, i * UNIT, y * UNIT);
+        }
+    else
+        for (int i = x1; i <= x2; i++) {
+            draw_wall(ground, i * UNIT, y * UNIT);
+        }
+
+
+}
+
+void draw_vertical_wall(int ground, int x, int y1, int y2) {
+
+
+    if (y1 > y2)
+        for (int i = y2; i <= y1; i++) {
+            draw_wall(ground, x * UNIT, i * UNIT);
+        }
+    else
+        for (int i = y1; i <= y2; i++) {
+            draw_wall(ground, x * UNIT, i * UNIT);
+        }
+
+}
+
+void draw_start_area(int ground) {
+    draw_wall(ground, UNIT, 0);
+
     draw_wall(ground, UNIT, -UNIT);
     draw_wall(ground,UNIT, -2*UNIT);
     draw_wall(ground,0,-2*UNIT);
@@ -376,33 +420,6 @@ draw_wall(ground, UNIT, 0);
     draw_wall(ground,-2*UNIT,-2*UNIT);
     draw_wall(ground,-2*UNIT,-1*UNIT);
     draw_wall(ground,-2*UNIT,0);
-
-
-    draw_wall(ground, UNIT, UNIT);
-    draw_wall(ground, UNIT, 2*UNIT);
-    //1,3 - -5, 3 TODO DRAW_HORIZONTAL(x,y1,y2)
-    draw_wall(ground, UNIT, 3*UNIT);
-    draw_wall(ground, 0*UNIT, 3*UNIT);
-    draw_wall(ground, -1*UNIT, 3*UNIT);
-    draw_wall(ground, -2*UNIT, 3*UNIT);
-    draw_wall(ground, -3*UNIT, 3*UNIT);
-    draw_wall(ground, -4*UNIT, 3*UNIT);
-    draw_wall(ground, -5*UNIT, 3*UNIT);
-
-    draw_wall(ground, -5*UNIT, 2*UNIT);
-    draw_wall(ground, -5*UNIT, 1*UNIT);
-    draw_wall(ground, -5*UNIT, 0*UNIT);
-    draw_wall(ground, -5*UNIT, -1*UNIT);
-    draw_wall(ground, -5*UNIT, -2*UNIT);
-}
-
-void draw_horizontal_wall(int ground, int x1, int x2, int y){
-
-
-}
-
-void draw_vertical_wall(int ground, int x, int y1, int y2){
-
 }
 
 GLuint load_texture(const char *filename) {
