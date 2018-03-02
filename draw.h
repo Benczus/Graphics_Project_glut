@@ -52,6 +52,8 @@ void draw_dungeon(int ground);
 void draw_horizontal_wall(int ground, int x1, int x2, int y);
 void draw_vertical_wall(int ground, int x, int y1, int y2);
 
+void draw_portal();
+
 GLuint load_texture(const char *filename);
 #endif // DRAW_H
 

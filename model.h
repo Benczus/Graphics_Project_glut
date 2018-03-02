@@ -71,7 +71,7 @@ typedef struct {
 typedef struct {
 	int ground;
     int skybox;
-	Entity windmill1, windmill2 ;
+    Entity portal;
     int walltexture;
 	float global_ambient[4];
 	float material_ambient[4];

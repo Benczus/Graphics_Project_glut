@@ -311,20 +311,20 @@ void draw_environment(World world) {
             glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse_2);
             GLfloat material_shininess[] = { 50.0 };
             glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
-		    glBindTexture(GL_TEXTURE_2D, world.windmill1.texture);
-    		draw_model(&world.windmill1.model);
+    glBindTexture(GL_TEXTURE_2D, world.portal.texture);
+    draw_model(&world.portal.model);
 		glEndList();
 
-		displayList2 = glGenLists(1);
-		glNewList(displayList2, GL_COMPILE);
-            glRotatef(180,1,0,0);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
-            glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient_2);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse_2);
-            glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
-		glBindTexture(GL_TEXTURE_2D, world.windmill2.texture);
-		draw_model(&world.windmill2.model);
-		glEndList();
+//		displayList2 = glGenLists(1);
+//		glNewList(displayList2, GL_COMPILE);
+//            glRotatef(180,1,0,0);
+//            glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
+//            glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient_2);
+//            glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse_2);
+//            glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
+//		glBindTexture(GL_TEXTURE_2D, world.windmill2.texture);
+//		draw_model(&world.windmill2.model);
+//		glEndList();
 
 	draw_ground(world.ground);
 
@@ -363,6 +363,7 @@ void draw_teapot_for_light(){
 void draw_entities(World world) {
 	glEnable(GL_TEXTURE_2D);
     draw_teapot_for_light();
+    draw_portal();
 	glDisable(GL_TEXTURE_2D);
 }
 
@@ -379,6 +380,12 @@ void draw_dungeon(int ground) {
     draw_vertical_wall(ground, -7, -5, 3);
 
 
+}
+
+void draw_portal() {
+    glPushMatrix();
+    glCallList(displayList1);
+    glPopMatrix();
 }
 
 void draw_horizontal_wall(int ground, int x1, int x2, int y) {

@@ -191,7 +191,8 @@ void reshape(GLsizei width, GLsizei height) {
 
 void init_entities(World *world) {
     //TODO
-
+    load_model("objects//portal.obj", &world->portal.model);
+    world->portal.texture = load_texture("textures/darkcave.jpg");
     world->ground = load_texture("textures//groundtexture.png");
     world->walltexture = load_texture("textures//walltex.png");
     world->skybox = load_texture("textures//darkcave2.jpg");
@@ -248,8 +249,8 @@ void display() {
 		
 		glEnable(GL_LIGHT0);
 		draw_environment(world);
+        draw_entities(world);
 
-		//draw_entities(world, wind);
 
 		reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
 		glutSwapBuffers();
