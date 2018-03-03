@@ -190,12 +190,15 @@ void reshape(GLsizei width, GLsizei height) {
 */
 
 void init_entities(World *world) {
-    //TODO
+    GLuint index = glGenLists(3);
     load_model("objects//portal.obj", &world->portal.model);
     world->portal.texture = load_texture("textures/darkcave.jpg");
     world->ground = load_texture("textures//groundtexture.png");
     world->walltexture = load_texture("textures//walltex.png");
     world->skybox = load_texture("textures//darkcave2.jpg");
+    draw_dungeon(world->walltexture);
+
+
 }
 
 void draw_help() {
@@ -426,9 +429,9 @@ void init() {
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	//glutInitWindowSize(2560, 1080);
-	glutInitWindowSize(640, 480);
+    glutInitWindowSize(1024, 760);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	int wnd = glutCreateWindow("Pyramid Escape");
+    int wnd = glutCreateWindow("Dungeon Escape");
 	glutSetWindow(wnd);
 
 	init();

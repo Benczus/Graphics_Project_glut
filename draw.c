@@ -6,8 +6,8 @@ double wind_speed=0;
 double skybox_size = 1000;
 double skybox_half= 500;
 double UNIT=50;
-GLuint displayList1;
-GLuint displayList2;
+GLuint displayList1 = 0;
+GLuint displayList2 = 1;
 typedef GLubyte Pixel;
 
 void draw_model(const struct Model* model)
@@ -103,8 +103,8 @@ void draw_ground(int ground) {
 	glEnd();
 }
 
-void draw_wall(int ground, int x, int y) {
-	glBindTexture(GL_TEXTURE_2D, ground);
+void draw_wall(int walltex, int x, int y) {
+    glBindTexture(GL_TEXTURE_2D, walltex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -301,8 +301,9 @@ void draw_skybox(int texture) {
 
 void draw_environment(World world) {
 	glEnable(GL_TEXTURE_2D);
-    displayList1 = glGenLists(1);
-		glNewList(displayList1, GL_COMPILE);
+
+
+    glNewList(displayList1, GL_COMPILE);
             GLfloat material_specular[] = {1, 1, 1, 1};
             glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
             GLfloat material_ambient_2[] = {0.5, 0.5, 0.5, 1};
@@ -328,7 +329,8 @@ void draw_environment(World world) {
 
 	draw_ground(world.ground);
 
-    draw_dungeon(world.walltexture);
+
+    glCallList(1);
 
 	GLfloat zeros[] = { 0, 0, 0 };
 	GLfloat ones[] = { 1, 1, 1 };
@@ -367,18 +369,27 @@ void draw_entities(World world) {
 	glDisable(GL_TEXTURE_2D);
 }
 
-void draw_dungeon(int ground) {
+void draw_dungeon(int walltex) {
 
 
-    draw_start_area(ground);
+    glNewList(displayList2, GL_COMPILE);
+    glBindTexture(GL_TEXTURE_2D, walltex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    draw_start_area(walltex);
 
-    draw_vertical_wall(ground, 1, 1, 3);
+    draw_vertical_wall(walltex, 1, 1, 3);
 
-    draw_horizontal_wall(ground, 0, -5, 3);
-    draw_vertical_wall(ground, -5, 2, -2);
-    draw_horizontal_wall(ground, 5, -5, -5);
-    draw_vertical_wall(ground, -7, -5, 3);
-
+    draw_horizontal_wall(walltex, 0, -5, 3);
+    draw_vertical_wall(walltex, -5, 2, -2);
+    draw_horizontal_wall(walltex, 1, -5, -5);
+    draw_vertical_wall(walltex, -5, -6, -11);
+    draw_horizontal_wall(walltex, 0, -5, -11);
+    draw_vertical_wall(walltex, 0, -8, -11);
+    draw_horizontal_wall(walltex, -2, 3, -8);
+    draw_vertical_wall(walltex, 4, 0, -8);
+    draw_horizontal_wall(walltex, 4, 1, 0);
+    glEndList();
 
 }
 
