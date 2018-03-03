@@ -52,7 +52,9 @@ void draw_dungeon(int ground);
 void draw_horizontal_wall(int ground, int x1, int x2, int y);
 void draw_vertical_wall(int ground, int x, int y1, int y2);
 
-void draw_portal();
+void draw_static_elements(int groundtex, int walltex, int skyboxtex);
+
+void draw_portal(World world);
 
 GLuint load_texture(const char *filename);
 #endif // DRAW_H

@@ -8,6 +8,7 @@ double skybox_half= 500;
 double UNIT=50;
 GLuint displayList1 = 0;
 GLuint displayList2 = 1;
+GLuint displayList3 = 2;
 typedef GLubyte Pixel;
 
 void draw_model(const struct Model* model)
@@ -101,6 +102,26 @@ void draw_ground(int ground) {
 		}
 	}
 	glEnd();
+}
+
+void draw_dungeon(int walltex) {
+
+
+    draw_start_area(walltex);
+
+    draw_vertical_wall(walltex, 1, 1, 3);
+
+    draw_horizontal_wall(walltex, 0, -5, 3);
+    draw_vertical_wall(walltex, -5, 2, -2);
+    draw_horizontal_wall(walltex, 1, -5, -5);
+    draw_vertical_wall(walltex, -5, -6, -11);
+    draw_horizontal_wall(walltex, 0, -5, -11);
+    draw_vertical_wall(walltex, 0, -8, -11);
+    draw_horizontal_wall(walltex, -2, 3, -8);
+    draw_vertical_wall(walltex, 4, 0, -8);
+    draw_horizontal_wall(walltex, 4, 1, 0);
+
+
 }
 
 void draw_wall(int walltex, int x, int y) {
@@ -299,22 +320,21 @@ void draw_skybox(int texture) {
     glEnd();
 }
 
+
+void draw_static_elements(int groundtex, int walltex, int skyboxtex) {
+    glNewList(displayList2, GL_COMPILE);
+    draw_ground(groundtex);
+    draw_skybox(skyboxtex);
+    draw_dungeon(walltex);
+    glEndList();
+}
+
 void draw_environment(World world) {
 	glEnable(GL_TEXTURE_2D);
 
 
-    glNewList(displayList1, GL_COMPILE);
-            GLfloat material_specular[] = {1, 1, 1, 1};
-            glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
-            GLfloat material_ambient_2[] = {0.5, 0.5, 0.5, 1};
-            GLfloat material_diffuse_2[] = {0.7, 0.7, 0.7, 1};
-            glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient_2);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse_2);
-            GLfloat material_shininess[] = { 50.0 };
-            glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
-    glBindTexture(GL_TEXTURE_2D, world.portal.texture);
-    draw_model(&world.portal.model);
-		glEndList();
+
+
 
 //		displayList2 = glGenLists(1);
 //		glNewList(displayList2, GL_COMPILE);
@@ -327,10 +347,11 @@ void draw_environment(World world) {
 //		draw_model(&world.windmill2.model);
 //		glEndList();
 
-	draw_ground(world.ground);
+//	draw_ground(world.ground);
+//    draw_skybox(world.skybox);
 
-
-    glCallList(1);
+    // glCallList(0);
+    glCallList(displayList2);
 
 	GLfloat zeros[] = { 0, 0, 0 };
 	GLfloat ones[] = { 1, 1, 1 };
@@ -338,7 +359,7 @@ void draw_environment(World world) {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, zeros);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, ones);
 
-    draw_skybox(world.skybox);
+
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, world.material_ambient);
 
@@ -363,40 +384,27 @@ void draw_teapot_for_light(){
     glPopMatrix();
 }
 void draw_entities(World world) {
-	glEnable(GL_TEXTURE_2D);
+    glNewList(displayList1, GL_COMPILE);
+    glEnable(GL_TEXTURE_2D);
     draw_teapot_for_light();
-    draw_portal();
-	glDisable(GL_TEXTURE_2D);
-}
-
-void draw_dungeon(int walltex) {
-
-
-    glNewList(displayList2, GL_COMPILE);
-    glBindTexture(GL_TEXTURE_2D, walltex);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    draw_start_area(walltex);
-
-    draw_vertical_wall(walltex, 1, 1, 3);
-
-    draw_horizontal_wall(walltex, 0, -5, 3);
-    draw_vertical_wall(walltex, -5, 2, -2);
-    draw_horizontal_wall(walltex, 1, -5, -5);
-    draw_vertical_wall(walltex, -5, -6, -11);
-    draw_horizontal_wall(walltex, 0, -5, -11);
-    draw_vertical_wall(walltex, 0, -8, -11);
-    draw_horizontal_wall(walltex, -2, 3, -8);
-    draw_vertical_wall(walltex, 4, 0, -8);
-    draw_horizontal_wall(walltex, 4, 1, 0);
+    draw_portal(world);
+    glDisable(GL_TEXTURE_2D);
     glEndList();
-
 }
 
-void draw_portal() {
-    glPushMatrix();
-    glCallList(displayList1);
-    glPopMatrix();
+
+void draw_portal(World world) {
+
+    GLfloat material_specular[] = {1, 1, 1, 1};
+    glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
+    GLfloat material_ambient_2[] = {0.5, 0.5, 0.5, 1};
+    GLfloat material_diffuse_2[] = {0.7, 0.7, 0.7, 1};
+    glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient_2);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse_2);
+    GLfloat material_shininess[] = {50.0};
+    glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
+    glBindTexture(GL_TEXTURE_2D, world.portal.texture);
+    draw_model(&world.portal.model);
 }
 
 void draw_horizontal_wall(int ground, int x1, int x2, int y) {

@@ -190,13 +190,14 @@ void reshape(GLsizei width, GLsizei height) {
 */
 
 void init_entities(World *world) {
-    GLuint index = glGenLists(3);
+    GLuint index = glGenLists(2); // 0-> objects, 1-> walls+ground+skybox
     load_model("objects//portal.obj", &world->portal.model);
     world->portal.texture = load_texture("textures/darkcave.jpg");
-    world->ground = load_texture("textures//groundtexture.png");
+    world->ground = load_texture("textures//groundtexture_temp.png");
     world->walltexture = load_texture("textures//walltex.png");
     world->skybox = load_texture("textures//darkcave2.jpg");
-    draw_dungeon(world->walltexture);
+    draw_static_elements(world->ground, world->walltexture, world->skybox);
+    draw_entities(*world);
 
 
 }
