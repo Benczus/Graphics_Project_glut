@@ -1,7 +1,6 @@
 #include "camera.h"
 #include <GL/glut.h>
 #include <math.h>
-#include "AABB.h"
 
 #define M_PI 3.14159265358979323846
 #define size 1000
@@ -128,25 +127,27 @@ void move_camera_down(struct Camera* camera, double distance)
 	camera->position.y -= distance;
     can_move(camera);
 }
-void move_camera_jump(struct Camera* camera, double distance, int* canJump, int* currentlyJumping)
+
+void move_camera_jump(struct Camera *camera, double elapsedTime, int *canJump, int *currentlyJumping)
 {
 	camera->prev_position = camera->position;
 	if(camera->position.y<JUMP_LOW)
-		camera->position.y += 2;
+        camera->position.y += 2 * 48 * elapsedTime;
     else if (camera->position.y<JUMP_MID)
-        camera->position.y+=1;
+        camera->position.y += 1 * 48 * elapsedTime;
     else if (camera->position.y<JUMP_HIGH)
-        camera->position.y+=0.5;
+        camera->position.y += 0.5 * 48 * elapsedTime;
     else if(camera->position.y<JUMP_MAX){
         *canJump=0;
         *currentlyJumping=0;
     }
 	can_move(camera);
 }
-void move_camera_crouch(struct Camera* camera){
+
+void move_camera_crouch(struct Camera *camera, double elapsedTime) {
 camera->prev_position= camera->position;
     if(camera->position.y>10)
-    camera->position.y-=3;
+        camera->position.y -= 3 * 48 * elapsedTime;
     can_move(camera);
 }
 

@@ -133,8 +133,19 @@ void draw_dungeon(int walltex) {
     draw_vertical_wall(walltex, -11, 3, 0);
     draw_horizontal_wall(walltex, -12, -16, 0);
 
-    draw_vertical_wall(walltex, -17, 0, 8);
-    draw_horizontal_wall(walltex, 1, -16, 8);
+    draw_vertical_wall(walltex, -17, 0, 9);
+    draw_horizontal_wall(walltex, 1, -16, 9);
+    draw_horizontal_wall(walltex, -1, -13, 6);
+    draw_vertical_wall(walltex, -14, 5, 2);
+    draw_vertical_wall(walltex, -1, 3, 5);
+    draw_vertical_wall(walltex, 2, 9, 5);
+    draw_horizontal_wall(walltex, 3, 3, 5);
+    draw_vertical_wall(walltex, 4, 4, 2);
+    draw_horizontal_wall(walltex, 4, 8, 2);
+    draw_vertical_wall(walltex, 8, 1, -4);
+    draw_horizontal_wall(walltex, 8, 10, -4);
+    draw_horizontal_wall(walltex, 5, 10, -7);
+    draw_vertical_wall(walltex, 10, -5, -9);
 
     //TODO
 

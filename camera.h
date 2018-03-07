@@ -70,8 +70,8 @@ void move_camera_up(struct Camera* camera, double distance);
  */
 void move_camera_down(struct Camera* camera, double distance);
 
-void  move_camera_jump(struct Camera* camera, double distance, int* canjump, int* currentlyJumping);
+void move_camera_jump(struct Camera *camera, double elapsedTime, int *canjump, int *currentlyJumping);
 
-void move_camera_crouch(struct Camera* camera);
+void move_camera_crouch(struct Camera *camera, double elapsedTime);
 #endif // CAMERA_H
 

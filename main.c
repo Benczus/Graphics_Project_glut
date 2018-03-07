@@ -25,7 +25,8 @@ struct Action
 	int light_on;
 };
 struct Action action;
-int time;
+static GLint fogmode;
+double time;
 
 
 int WINDOW_WIDTH;
@@ -90,16 +91,17 @@ void update_camera_position(struct Camera* camera, double elapsed_time)
 //	}
 
     if(((action.jump == TRUE) && CAN_JUMP==1)|| CURRENTLY_JUMPING==1){
+
 CURRENTLY_JUMPING=1;
-        printf("%d", CURRENTLY_JUMPING);
-    move_camera_jump(camera,distance,&CAN_JUMP, &CURRENTLY_JUMPING);
+
+        move_camera_jump(camera, elapsed_time, &CAN_JUMP, &CURRENTLY_JUMPING);
     } else if(camera->position.y>GROUND_LEVEL ){
         if(camera->position.y>35)
-            camera->position.y -= 1;
+            camera->position.y -= 1 * 48 * elapsed_time;
         else if (camera->position.y>30)
-            camera->position.y-=2;
+            camera->position.y -= 2 * 48 * elapsed_time;
         else if (camera->position.y<=30)
-            camera->position.y-=2.5;
+            camera->position.y -= 2.5 * 48 * elapsed_time;
         if (camera->position.y<21) {
             camera->position.y=20;
             CAN_JUMP = 1;
@@ -109,7 +111,7 @@ CURRENTLY_JUMPING=1;
     }
 
     if((action.crouch==TRUE) && (CURRENTLY_JUMPING==0) ){
-        move_camera_crouch(camera);
+        move_camera_crouch(camera, elapsed_time);
     }
  else if(camera->position.y<GROUND_LEVEL){
         camera->position.y+=3;
@@ -141,7 +143,7 @@ CURRENTLY_JUMPING=1;
 
 double calc_elapsed_time()
 {
-	int current_time;
+    double current_time;
 	double elapsed_time;
 
 	current_time = glutGet(GLUT_ELAPSED_TIME);
@@ -151,6 +153,7 @@ double calc_elapsed_time()
 
 	return elapsed_time;
 }
+
 /*
 * Handles special keyboard buttons 
 */
@@ -192,12 +195,27 @@ void reshape(GLsizei width, GLsizei height) {
 void init_entities(World *world) {
     GLuint index = glGenLists(2); // 0-> objects, 1-> walls+ground+skybox
     load_model("objects//portal.obj", &world->portal.model);
-    world->portal.texture = load_texture("textures/darkcave.jpg");
-    world->ground = load_texture("textures//groundtexture_temp.png");
+    world->portal.texture = load_texture("textures//darkstone.jpeg");
+    world->ground = load_texture("textures//groundtexture.png");
     world->walltexture = load_texture("textures//walltex.png");
     world->skybox = load_texture("textures//darkcave2.jpg");
     draw_static_elements(world->ground, world->walltexture, world->skybox);
     draw_entities(*world);
+
+    /// INIT FOG
+    glEnable(GL_FOG);
+    {
+        GLfloat fogColor[4] = {0.4, 0.1, 0.1, 0.0};
+        fogmode = GL_EXP;
+        glFogi(GL_FOG_MODE, fogmode);
+        glFogfv(GL_FOG_COLOR, fogColor);
+        glFogf(GL_FOG_DENSITY, 0.0015);
+        glHint(GL_FOG_HINT, GL_DONT_CARE);
+        glFogf(GL_FOG_START, 2.0);
+        glFogf(GL_FOG_END, 5.0);
+
+    }
+    glClearColor(0.5, 0.5, 0.5, 1.0);
 
 
 }
@@ -250,7 +268,8 @@ void display() {
         if(action.light_on)
             glEnable(GL_LIGHT5);
 
-		
+
+        // glDisable(GL_FOG);
 		glEnable(GL_LIGHT0);
 		draw_environment(world);
         draw_entities(world);
