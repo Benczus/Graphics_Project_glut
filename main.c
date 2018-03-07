@@ -195,6 +195,7 @@ void reshape(GLsizei width, GLsizei height) {
 void init_entities(World *world) {
     GLuint index = glGenLists(2); // 0-> objects, 1-> walls+ground+skybox
     load_model("objects//portal.obj", &world->portal.model);
+    world->portalInside = load_texture("textures//portalwall.png");
     world->portal.texture = load_texture("textures//darkstone.jpeg");
     world->ground = load_texture("textures//groundtexture.png");
     world->walltexture = load_texture("textures//walltex.png");

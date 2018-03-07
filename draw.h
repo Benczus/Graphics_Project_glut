@@ -56,6 +56,7 @@ void draw_static_elements(int groundtex, int walltex, int skyboxtex);
 
 void draw_portal(World world);
 
+void draw_portal_texture(int walltex, float x, float y);
 GLuint load_texture(const char *filename);
 #endif // DRAW_H
 

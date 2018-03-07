@@ -142,10 +142,12 @@ void draw_dungeon(int walltex) {
     draw_horizontal_wall(walltex, 3, 3, 5);
     draw_vertical_wall(walltex, 4, 4, 2);
     draw_horizontal_wall(walltex, 4, 8, 2);
-    draw_vertical_wall(walltex, 8, 1, -4);
-    draw_horizontal_wall(walltex, 8, 10, -4);
-    draw_horizontal_wall(walltex, 5, 10, -7);
-    draw_vertical_wall(walltex, 10, -5, -9);
+    draw_vertical_wall(walltex, 8, 1, -3);
+    draw_horizontal_wall(walltex, 8, 10, -3);
+    draw_horizontal_wall(walltex, 6, 10, -7);
+    draw_vertical_wall(walltex, 10, -4, -4);
+    draw_vertical_wall(walltex, 10, -6, -6);
+
 
     //TODO
 
@@ -194,8 +196,8 @@ void draw_start_area(int ground) {
 }
 void draw_wall(int walltex, int x, int y) {
     glBindTexture(GL_TEXTURE_2D, walltex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 //	glBegin(GL_QUADS);
 //	glTexCoord2f(0.0, 0.0);
@@ -313,7 +315,127 @@ void draw_wall(int walltex, int x, int y) {
     glEnd();
 
 
+}
 
+void draw_portal_texture(int walltex, float x, float y) {
+    glBindTexture(GL_TEXTURE_2D, walltex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+//	glBegin(GL_QUADS);
+//	glTexCoord2f(0.0, 0.0);
+//	glNormal3f(0, -1, 0);
+//	glVertex3f(x, 0, y);
+//
+//	glTexCoord2f(0.0, 1.0);
+//	glNormal3f(0, -1, 0);
+//	glVertex3f(x , 0, y+50);
+//
+//	glTexCoord2f(1.0, 1.0);
+//	glNormal3f(0, -1, 0);
+//	glVertex3f(x+50, 0, y+50);
+//
+//	glTexCoord2f(1.0, 0.0);
+//	glNormal3f(0, -1, 0);
+//	glVertex3f(x+50, 0, y);
+//
+//	glEnd();
+
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x, 0, y);
+
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x, 100, y);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x + 50, 100, y);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x + 50, 0, y);
+
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x, 0, y);
+
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x, 100, y);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x, 100, y + 50);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x, 0, y + 50);
+
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x + 50, 0, y);
+
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x + 50, 100, y);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x + 50, 100, y + 50);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x + 50, 0, y + 50);
+
+    glEnd();
+
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0.0, 0.0);
+//    glNormal3f(0, -1, 0);
+//    glVertex3f(x, 100, y);
+//
+//    glTexCoord2f(0.0, 1.0);
+//    glNormal3f(0, -1, 0);
+//    glVertex3f(x+50, 100,y);
+//
+//    glTexCoord2f(1.0, 1.0);
+//    glNormal3f(0, -1, 0);
+//    glVertex3f(x+50, 100, y+50);
+//
+//    glTexCoord2f(1.0, 0.0);
+//    glNormal3f(0, -1, 0);
+//    glVertex3f(x, 100, y+50);
+//
+//    glEnd();
+
+
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x, 0, y + 50);
+    glTexCoord2f(0.0, 0.0);
+
+    glNormal3f(0, -1, 0);
+    glVertex3f(x + 50, 0, y + 50);
+    glTexCoord2f(0.0, 1.0);
+
+    glNormal3f(0, -1, 0);
+    glVertex3f(x + 50, 100, y + 50);
+    glTexCoord2f(1.0, 1.0);
+
+    glNormal3f(0, -1, 0);
+    glVertex3f(x, 100, y + 50);
+
+    glEnd();
 
 
 }
@@ -412,7 +534,7 @@ void draw_teapot_for_light() {
 
 void draw_portal(World world) {
     glPushMatrix();
-    glTranslated(10 * UNIT, 0, -5 * UNIT);
+    glTranslated(10 * UNIT, 0, -4.5 * UNIT);
     glRotatef(270, 0, 1, 0);
     GLfloat material_specular[] = {1, 1, 1, 1};
     glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
@@ -424,6 +546,7 @@ void draw_portal(World world) {
     glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
     glBindTexture(GL_TEXTURE_2D, world.portal.texture);
     draw_model(&world.portal.model);
+
     glPopMatrix();
 
 
@@ -439,6 +562,7 @@ void draw_portal(World world) {
     glBindTexture(GL_TEXTURE_2D, world.portal.texture);
     draw_model(&world.portal.model);
     glPopMatrix();
+
 
 }
 
@@ -457,7 +581,7 @@ void draw_environment(World world) {
 
     glCallList(displayList1);
     glCallList(displayList2);
-
+    draw_vertical_wall(world.portalInside, 10, -5, -5);
 	GLfloat zeros[] = { 0, 0, 0 };
 	GLfloat ones[] = { 1, 1, 1 };
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, zeros);
