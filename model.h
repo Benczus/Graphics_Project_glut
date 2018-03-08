@@ -72,7 +72,9 @@ typedef struct {
 	int ground;
     int skybox;
     int portalInside;
+    int fireTexture;
     Entity portal;
+	Entity torch;
     int walltexture;
 	float global_ambient[4];
 	float material_ambient[4];

@@ -51,7 +51,7 @@ void draw_wall(int ground, int x, int y);
 void draw_dungeon(int ground);
 void draw_horizontal_wall(int ground, int x1, int x2, int y);
 void draw_vertical_wall(int ground, int x, int y1, int y2);
-
+void draw_torch_for_light(World world, int x, int y, int rotation);
 void draw_static_elements(int groundtex, int walltex, int skyboxtex);
 
 void draw_portal(World world);

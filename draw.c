@@ -1,4 +1,5 @@
 #include "draw.h"
+#include "model.h"
 #include <GL/glut.h>
 #include <SOIL/SOIL.h>
 
@@ -516,20 +517,154 @@ void draw_static_elements(int groundtex, int walltex, int skyboxtex) {
     glEndList();
 }
 
-void draw_teapot_for_light() {
+void draw_torch_for_light(World world, int x, int y, int rotation) {
     glPushMatrix();
     GLfloat material_specular[] = {1, 1, 1, 1};
     glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
-    GLfloat material_ambient_2[] = {0.5, 0.5, 0.5, 1};
-    GLfloat material_diffuse_2[] = {0.7, 0.7, 0.7, 1};
+    GLfloat material_ambient_2[] = {0.8, 0.8, 0.8, 1};
+    GLfloat material_diffuse_2[] = {0.8, 0.8, 0.8, 1};
     glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient_2);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse_2);
     GLfloat material_shininess[] = {50.0};
     glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
-    glTranslatef(500, 10, 500);
-    glScalef(10, 10, 10);
-    glutSolidTeapot(1.0);
+    glTranslatef(0, 20, 0);
+glRotatef(-45,0,0,1);
+    glRotatef(180,0,1,0);
+    glBindTexture(GL_TEXTURE_2D, world.torch.texture);
+    draw_model(&world.torch.model);
+
+    glBindTexture(GL_TEXTURE_2D, world.fireTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glRotatef(-45,1,0,0);
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(3 , 17, 15);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(-3,17, 15);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(0, 27, 18);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(3 , 14, 20);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(-3,14, 20);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(0, 27, 18);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(3 , 17, 15);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(3 , 14, 20);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(0, 27, 18);
+
+    glEnd();
+
+
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(-3 , 17, 15);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(-3, 14, 20);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(0, 27, 18);
+
+    glEnd();
+
+    //
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(3 , 17, 15);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(-3,17, 15);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(0, 14, 14);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(3 , 14, 20);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(-3,14, 20);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(0, 14, 14);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(3 , 17, 15);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(3 , 14, 20);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(0, 14, 14);
+
+    glEnd();
+
+
+    glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(-3 , 17, 15);
+
+    glTexCoord2f(1.0, 1.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(-3, 14, 20);
+
+    glTexCoord2f(1.0, 0.0);
+    glNormal3f(0, -1, 0);
+    glVertex3f(0, 14, 14);
+
+glEnd();
+
+
+
     glPopMatrix();
+
 }
 
 void draw_portal(World world) {
@@ -569,7 +704,10 @@ void draw_portal(World world) {
 void draw_entities(World world) {
     glNewList(displayList1, GL_COMPILE);
     glEnable(GL_TEXTURE_2D);
-    draw_teapot_for_light();
+//    for (int i = 0; i < ; ++i) {
+//
+//    }
+    draw_torch_for_light(world,0,0,0); //TODO
     draw_portal(world);
     glDisable(GL_TEXTURE_2D);
     glEndList();

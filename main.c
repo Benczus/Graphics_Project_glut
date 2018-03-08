@@ -195,6 +195,9 @@ void reshape(GLsizei width, GLsizei height) {
 void init_entities(World *world) {
     GLuint index = glGenLists(2); // 0-> objects, 1-> walls+ground+skybox
     load_model("objects//portal.obj", &world->portal.model);
+    load_model("objects//torch.obj", &world->torch.model);
+	world->fireTexture=load_texture("textures//fireTexture.png");
+    world->torch.texture=load_texture("textures//treebark.png");
     world->portalInside = load_texture("textures//portalwall.png");
     world->portal.texture = load_texture("textures//darkstone.jpeg");
     world->ground = load_texture("textures//groundtexture.png");
@@ -334,6 +337,11 @@ void key_handler(unsigned char key, int x, int y)
 	case '-':
 		action.decrease_light = TRUE;
 		break;
+        case 'f':
+            if (action.light_on == FALSE)
+            action.light_on= TRUE;
+            else action.light_on= FALSE;
+            break;
 	case 27:
 		exit(0);
 	}
@@ -368,6 +376,8 @@ void key_up_handler(unsigned char key, int x, int y)
 	case '-':
 		action.decrease_light = FALSE;
 		break;
+
+
 	case 27:
 		exit(0);
 	}
