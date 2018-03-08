@@ -144,7 +144,7 @@ void draw_dungeon(int walltex) {
     draw_horizontal_wall(walltex, 4, 8, 2);
     draw_vertical_wall(walltex, 8, 1, -3);
     draw_horizontal_wall(walltex, 8, 10, -3);
-    draw_horizontal_wall(walltex, 6, 10, -7);
+    draw_horizontal_wall(walltex,5, 10, -7);
     draw_vertical_wall(walltex, 10, -4, -4);
     draw_vertical_wall(walltex, 10, -6, -6);
 

@@ -8,6 +8,7 @@
 #define JUMP_HIGH 40
 #define JUMP_MID 35
 #define JUMP_LOW 30
+#define SPEED 0.5
 
 
 double degree_to_radian(double degree)
@@ -76,7 +77,7 @@ void move_camera_forward(struct Camera* camera, double distance)
 {
 	camera->prev_position = camera->position;
 	double angle = degree_to_radian(camera->pose.z);
-
+distance*=SPEED;
 	camera->position.z -= cos(angle) * distance;
 	camera->position.x -= sin(angle) * distance;
     can_move(camera);
@@ -86,7 +87,7 @@ void move_camera_backward(struct Camera* camera, double distance)
 {
 	camera->prev_position = camera->position;
 	double angle = degree_to_radian(camera->pose.z);
-
+	distance*=SPEED;
 	camera->position.z += cos(angle) * distance;
 	camera->position.x += sin(angle) * distance;
     can_move(camera);
@@ -96,7 +97,7 @@ void step_camera_left(struct Camera* camera, double distance)
 {
 	camera->prev_position = camera->position;
 	double angle = degree_to_radian(camera->pose.z + 90.0);
-
+	distance*=SPEED;
 	camera->position.z -= cos(angle) * distance;
 	camera->position.x -= sin(angle) * distance;
     can_move(camera);
@@ -106,27 +107,27 @@ void step_camera_right(struct Camera* camera, double distance)
 {
 	camera->prev_position = camera->position;
 	double angle = degree_to_radian(camera->pose.z - 90.0);
-
+	distance*=SPEED;
 	camera->position.z -= cos(angle) * distance;
 	camera->position.x -= sin(angle) * distance;
     can_move(camera);
 }
 
-void move_camera_up(struct Camera* camera, double distance)
-{
-	camera->prev_position = camera->position;
-    if(camera->position.y<size-10)
-	camera->position.y += distance;
-    can_move(camera);
-}
-
-void move_camera_down(struct Camera* camera, double distance)
-{
-	camera->prev_position = camera->position;
-	if(camera->position.y>10)
-	camera->position.y -= distance;
-    can_move(camera);
-}
+//void move_camera_up(struct Camera* camera, double distance)
+//{
+//	camera->prev_position = camera->position;
+//    if(camera->position.y<size-10)
+//	camera->position.y += distance;
+//    can_move(camera);
+//}
+//
+//void move_camera_down(struct Camera* camera, double distance)
+//{
+//	camera->prev_position = camera->position;
+//	if(camera->position.y>10)
+//	camera->position.y -= distance;
+//    can_move(camera);
+//}
 
 void move_camera_jump(struct Camera *camera, double elapsedTime, int *canJump, int *currentlyJumping)
 {
