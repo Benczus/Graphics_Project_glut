@@ -287,7 +287,7 @@ void display() {
 
         glEnable(GL_LIGHT0);
 
-        draw_environment(world, elapsed_time);
+        draw_environment(world, elapsed_time, action.light_on);
 
         draw_entities(world);
 

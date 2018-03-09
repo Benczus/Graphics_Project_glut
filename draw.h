@@ -36,7 +36,7 @@ void draw_ground(int ground);
 */
 void draw_skybox(int skybox);
 
-void draw_environment(World world, double elapsedTime);
+void draw_environment(World world, double elapsedTime, int lighton);
 
 /*
 * Adds texture to the skybox
@@ -48,13 +48,13 @@ void draw_entities(World world);
 
 void draw_wall(int ground, int x, int y);
 
-void draw_torches(World world, double elapsedTime);
+void draw_torches(World world, double elapsedTime, int lighton);
 
 void draw_dungeon(int ground);
 void draw_horizontal_wall(int ground, int x1, int x2, int y);
 void draw_vertical_wall(int ground, int x, int y1, int y2);
 
-void draw_torch_for_light(World world, float x, float y, int rotation, int movementCoutner);
+void draw_torch_for_light(World world, float x, float y, int rotation, int flameCounter, int lighton);
 void draw_static_elements(int groundtex, int walltex, int skyboxtex);
 
 void draw_portal(World world);

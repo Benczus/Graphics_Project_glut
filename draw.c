@@ -518,7 +518,7 @@ void draw_static_elements(int groundtex, int walltex, int skyboxtex) {
     glEndList();
 }
 
-void draw_torch_for_light(World world, float x, float y, int rotation, int flameCounter) {
+void draw_torch_for_light(World world, float x, float y, int rotation, int flameCounter, int lighton) {
     glPushMatrix();
     GLfloat material_specular[] = {1, 1, 1, 1};
     glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
@@ -559,142 +559,142 @@ void draw_torch_for_light(World world, float x, float y, int rotation, int flame
             printf("Wrong rotation entered! 0=up, 1 =down, 2=right, 3=left");
     }
 
-
-
-
     glBindTexture(GL_TEXTURE_2D, world.torch.texture);
     draw_model(&world.torch.model);
 
-    glBindTexture(GL_TEXTURE_2D, world.fireTexture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glRotatef(-45,1,0,0);
-    glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(3 , 17, 15);
-
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(-3,17, 15);
-
-    glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(0, flameCounter + 22, 18);
+    if (lighton) {
 
 
-    glEnd();
+        glBindTexture(GL_TEXTURE_2D, world.fireTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(3 , 14, 20);
+        glRotatef(-45, 1, 0, 0);
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(3, 17, 15);
 
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(-3,14, 20);
+        glTexCoord2f(1.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(-3, 17, 15);
 
-    glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(0, flameCounter + 22, 18);
-
-    glEnd();
-
-    glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(3 , 17, 15);
-
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(3 , 14, 20);
-
-    glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(0, flameCounter + 22, 18);
-
-    glEnd();
+        glTexCoord2f(1.0, 0.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(0, flameCounter + 22, 18);
 
 
-    glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(-3 , 17, 15);
+        glEnd();
 
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(-3, 14, 20);
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(3, 14, 20);
 
-    glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(0, flameCounter + 22, 18);
+        glTexCoord2f(1.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(-3, 14, 20);
 
-    glEnd();
+        glTexCoord2f(1.0, 0.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(0, flameCounter + 22, 18);
 
-    //
-    glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(3 , 17, 15);
+        glEnd();
 
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(-3,17, 15);
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(3, 17, 15);
 
-    glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(0, 14, 14);
+        glTexCoord2f(1.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(3, 14, 20);
 
-    glEnd();
+        glTexCoord2f(1.0, 0.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(0, flameCounter + 22, 18);
 
-    glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(3 , 14, 20);
-
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(-3,14, 20);
-
-    glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(0, 14, 14);
-
-    glEnd();
-
-    glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(3 , 17, 15);
-
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(3 , 14, 20);
-
-    glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(0, 14, 14);
-
-    glEnd();
+        glEnd();
 
 
-    glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(-3 , 17, 15);
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(-3, 17, 15);
 
-    glTexCoord2f(1.0, 1.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(-3, 14, 20);
+        glTexCoord2f(1.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(-3, 14, 20);
 
-    glTexCoord2f(1.0, 0.0);
-    glNormal3f(0, -1, 0);
-    glVertex3f(0, 14, 14);
+        glTexCoord2f(1.0, 0.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(0, flameCounter + 22, 18);
 
-glEnd();
+        glEnd();
+
+        //
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(3, 17, 15);
+
+        glTexCoord2f(1.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(-3, 17, 15);
+
+        glTexCoord2f(1.0, 0.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(0, 14, 14);
+
+        glEnd();
+
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(3, 14, 20);
+
+        glTexCoord2f(1.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(-3, 14, 20);
+
+        glTexCoord2f(1.0, 0.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(0, 14, 14);
+
+        glEnd();
+
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(3, 17, 15);
+
+        glTexCoord2f(1.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(3, 14, 20);
+
+        glTexCoord2f(1.0, 0.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(0, 14, 14);
+
+        glEnd();
 
 
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(-3, 17, 15);
+
+        glTexCoord2f(1.0, 1.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(-3, 14, 20);
+
+        glTexCoord2f(1.0, 0.0);
+        glNormal3f(0, -1, 0);
+        glVertex3f(0, 14, 14);
+
+        glEnd();
+
+    }
 
     glPopMatrix();
 
@@ -741,7 +741,7 @@ void draw_entities(World world) {
     glEndList();
 }
 
-void draw_torches(World world, double elapsedTime) {
+void draw_torches(World world, double elapsedTime, int lighton) {
     if (flameCounter <= 0 && flameShouldAdd == 0) {
         flameCounter += 1 * elapsedTime;;
         flameShouldAdd = 1;
@@ -756,42 +756,42 @@ void draw_torches(World world, double elapsedTime) {
     printf("%d, %f \n", flameShouldAdd, flameCounter);
 
 
-    draw_torch_for_light(world, 1, 1, 2, flameCounter);
+    draw_torch_for_light(world, 1, 1, 2, flameCounter, lighton);
 
-    draw_torch_for_light(world, -3, 3, 1, flameCounter);
+    draw_torch_for_light(world, -3, 3, 1, flameCounter, lighton);
 
-    draw_torch_for_light(world, -3, -4, 0, flameCounter);
-    draw_torch_for_light(world, -7.5, -4, 0, flameCounter);
-    draw_torch_for_light(world, -7.5, -11, 0, flameCounter);
-    draw_torch_for_light(world, 4, -4, 2, flameCounter);
-    draw_torch_for_light(world, 3, 0, 1, flameCounter);
-    draw_torch_for_light(world, 0, -5, 1, flameCounter);
-    draw_torch_for_light(world, -1, -8, 1, flameCounter);
-    draw_torch_for_light(world, -10, -7, 0, flameCounter);
-    draw_torch_for_light(world, -9.5, 3, 1, flameCounter);
-    draw_torch_for_light(world, -9.5, 4, 0, flameCounter);
-    draw_torch_for_light(world, -1, 5, 2, flameCounter);
-    draw_torch_for_light(world, -16, 4, 3, flameCounter);
-    draw_torch_for_light(world, -13, 9, 1, flameCounter);
-    draw_torch_for_light(world, -9, 9, 1, flameCounter);
+    draw_torch_for_light(world, -3, -4, 0, flameCounter, lighton);
+    draw_torch_for_light(world, -7.5, -4, 0, flameCounter, lighton);
+    draw_torch_for_light(world, -7.5, -11, 0, flameCounter, lighton);
+    draw_torch_for_light(world, 4, -4, 2, flameCounter, lighton);
+    draw_torch_for_light(world, 3, 0, 1, flameCounter, lighton);
+    draw_torch_for_light(world, 0, -5, 1, flameCounter, lighton);
+    draw_torch_for_light(world, -1, -8, 1, flameCounter, lighton);
+    draw_torch_for_light(world, -10, -7, 0, flameCounter, lighton);
+    draw_torch_for_light(world, -9.5, 3, 1, flameCounter, lighton);
+    draw_torch_for_light(world, -9.5, 4, 0, flameCounter, lighton);
+    draw_torch_for_light(world, -1, 5, 2, flameCounter, lighton);
+    draw_torch_for_light(world, -16, 4, 3, flameCounter, lighton);
+    draw_torch_for_light(world, -13, 9, 1, flameCounter, lighton);
+    draw_torch_for_light(world, -9, 9, 1, flameCounter, lighton);
 
-    draw_torch_for_light(world, -4, 9, 1, flameCounter);
-    draw_torch_for_light(world, 1, 4, 0, flameCounter);
-    draw_torch_for_light(world, 6, -6, 0, flameCounter);
-    draw_torch_for_light(world, 8, -6, 0, flameCounter);
-    draw_torch_for_light(world, 10, -5.5, 2, flameCounter);
-    draw_torch_for_light(world, 10, -3.5, 2, flameCounter);
+    draw_torch_for_light(world, -4, 9, 1, flameCounter, lighton);
+    draw_torch_for_light(world, 1, 4, 0, flameCounter, lighton);
+    draw_torch_for_light(world, 6, -6, 0, flameCounter, lighton);
+    draw_torch_for_light(world, 8, -6, 0, flameCounter, lighton);
+    draw_torch_for_light(world, 10, -5.5, 2, flameCounter, lighton);
+    draw_torch_for_light(world, 10, -3.5, 2, flameCounter, lighton);
 
 
 }
 
-void draw_environment(World world, double elapsedTime) {
+void draw_environment(World world, double elapsedTime, int lighton) {
 	glEnable(GL_TEXTURE_2D);
 
     glCallList(displayList1);
     glCallList(displayList2);
 
-    draw_torches(world, elapsedTime);
+    draw_torches(world, elapsedTime, lighton);
 
 
     draw_vertical_wall(world.portalInside, 10, -5, -5);
