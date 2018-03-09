@@ -134,10 +134,12 @@ CURRENTLY_JUMPING=1;
 	}
 
 	if (action.light_on) {
-        glEnable(GL_LIGHT5);
+        // glEnable(GL_LIGHT5);
+        glEnable(GL_LIGHT2);
 	}
 	else {
-		glDisable(GL_LIGHT5);
+        //glDisable(GL_LIGHT5);
+        glDisable(GL_LIGHT2);
 	}
 }
 
@@ -260,22 +262,33 @@ void display() {
 		elapsed_time = calc_elapsed_time();
 		update_camera_position(&camera, elapsed_time);
 
-        GLfloat light_position[] = { 0.0, 500.0, 0.0, 0.0 };
-        GLfloat light_ambient[] = { 0.1, 0.1, 0.1, 0 };
-        GLfloat light_diffuse[] = { 0.5, 0.5, 0.5, 0 };
-        GLfloat light_specular[] = { 1, 1, 1, 0 };
+//        GLfloat light_position[] = { 0.0, 0.0, 0.0, 0.0 };
+//        GLfloat light_ambient[] = { 0.1, 0.1, 0.1, 0 };
+//        GLfloat light_diffuse[] = { 0.5, 0.5, 0.5, 0 };
+//        GLfloat light_specular[] = { 1, 1, 1, 0 };
+//
+//        glLightfv(GL_LIGHT5, GL_POSITION, light_position);
+//        glLightfv(GL_LIGHT5, GL_AMBIENT, light_ambient);
+//        glLightfv(GL_LIGHT5, GL_DIFFUSE, light_diffuse);
+//        glLightfv(GL_LIGHT5, GL_SPECULAR, light_specular);
+//        if(action.light_on)
+//            glEnable(GL_LIGHT5);
+//
+        GLfloat light_position[] = {0.0, 200, 0.0, 1};
+        GLfloat light_ambient[] = {0.8, 0.2, 0.1, 0};
+        GLfloat light_diffuse[] = {0.8, 0.2, 0.0, 0};
+        GLfloat light_specular[] = {0.8, 0.1, 0.1, 0};
 
-        glLightfv(GL_LIGHT5, GL_POSITION, light_position);
-        glLightfv(GL_LIGHT5, GL_AMBIENT, light_ambient);
-        glLightfv(GL_LIGHT5, GL_DIFFUSE, light_diffuse);
-        glLightfv(GL_LIGHT5, GL_SPECULAR, light_specular);
-        if(action.light_on)
-            glEnable(GL_LIGHT5);
+        glLightfv(GL_LIGHT2, GL_POSITION, light_position);
+        glLightfv(GL_LIGHT2, GL_AMBIENT, light_ambient);
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, light_diffuse);
+        glLightfv(GL_LIGHT2, GL_SPECULAR, light_specular);
 
 
-        // glDisable(GL_FOG);
-		glEnable(GL_LIGHT0);
-		draw_environment(world);
+        glEnable(GL_LIGHT0);
+
+        draw_environment(world, elapsed_time);
+
         draw_entities(world);
 
 
@@ -286,6 +299,7 @@ void display() {
 	else {
 		draw_help();
 	}
+    glFlush();
 }
 
 void mouse_handler(int button, int state, int x, int y)
@@ -419,16 +433,16 @@ void init_world(World* world) {
 	init_entities(world);
 }
 void init_difuse_light() {
-GLfloat light_position[] = { 100.0, 100.0, 100.0, 0.0 };
-    GLfloat light_ambient[] = { 0.1, 0.1, 0.1, 0 };
-    GLfloat light_diffuse[] = { 0.5, 0.5, 0, 0 };
-    GLfloat light_specular[] = { 1, 1, 1, 0 };
+    GLfloat light_position[] = {100.0, 100.0, 100.0, 1.0};
+    GLfloat light_ambient[] = {0.1, 0.1, 0.1, 1};
+    GLfloat light_diffuse[] = {0.5, 0.5, 0, 1};
+    GLfloat light_specular[] = {1, 1, 1, 1};
 
     glLightfv(GL_LIGHT5, GL_POSITION, light_position);
     glLightfv(GL_LIGHT5, GL_AMBIENT, light_ambient);
     glLightfv(GL_LIGHT5, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT5, GL_SPECULAR, light_specular);
-    glEnable(GL_LIGHT5);
+
 
 }
 void init_lighting() {

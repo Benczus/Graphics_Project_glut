@@ -1,6 +1,4 @@
 #include "draw.h"
-#include "model.h"
-#include <GL/glut.h>
 #include <SOIL/SOIL.h>
 
 
@@ -11,6 +9,9 @@ GLuint displayList1 = 0;
 GLuint displayList2 = 1;
 GLuint displayList3 = 2;
 typedef GLubyte Pixel;
+
+double flameCounter = 0;
+int flameShouldAdd = 0;
 
 void draw_model(const struct Model* model)
 {
@@ -517,19 +518,50 @@ void draw_static_elements(int groundtex, int walltex, int skyboxtex) {
     glEndList();
 }
 
-void draw_torch_for_light(World world, int x, int y, int rotation) {
+void draw_torch_for_light(World world, float x, float y, int rotation, int flameCounter) {
     glPushMatrix();
     GLfloat material_specular[] = {1, 1, 1, 1};
     glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
-    GLfloat material_ambient_2[] = {0.8, 0.8, 0.8, 1};
-    GLfloat material_diffuse_2[] = {0.8, 0.8, 0.8, 1};
+    GLfloat material_ambient_2[] = {0.8, 0.3, 0.3, 1};
+    GLfloat material_diffuse_2[] = {0.8, 0.3, 0.3, 1};
     glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient_2);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse_2);
     GLfloat material_shininess[] = {50.0};
     glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
-    glTranslatef(0, 20, 0);
-glRotatef(-45,0,0,1);
-    glRotatef(180,0,1,0);
+
+    x *= UNIT;
+    y *= UNIT;
+    glTranslatef(x, 40, y);
+
+//
+//glRotatef(180,0,1,0);
+
+    switch (rotation) {
+        case 0:
+            glRotatef(45, 1, 0, 0);
+            break;
+        case 1:
+            glRotatef(-45, 1, 0, 0);
+            glRotatef(180, 0, 1, 0);
+            break;
+
+        case 2:
+            glRotatef(45, 0, 0, 1);
+            glRotatef(-90, 0, 1, 0);
+            break;
+
+        case 3:
+            glRotatef(-45, 0, 0, 1);
+            glRotatef(90, 0, 1, 0);
+            break;
+
+        default:
+            printf("Wrong rotation entered! 0=up, 1 =down, 2=right, 3=left");
+    }
+
+
+
+
     glBindTexture(GL_TEXTURE_2D, world.torch.texture);
     draw_model(&world.torch.model);
 
@@ -549,7 +581,8 @@ glRotatef(-45,0,0,1);
 
     glTexCoord2f(1.0, 0.0);
     glNormal3f(0, -1, 0);
-    glVertex3f(0, 27, 18);
+    glVertex3f(0, flameCounter + 22, 18);
+
 
     glEnd();
 
@@ -564,7 +597,7 @@ glRotatef(-45,0,0,1);
 
     glTexCoord2f(1.0, 0.0);
     glNormal3f(0, -1, 0);
-    glVertex3f(0, 27, 18);
+    glVertex3f(0, flameCounter + 22, 18);
 
     glEnd();
 
@@ -579,7 +612,7 @@ glRotatef(-45,0,0,1);
 
     glTexCoord2f(1.0, 0.0);
     glNormal3f(0, -1, 0);
-    glVertex3f(0, 27, 18);
+    glVertex3f(0, flameCounter + 22, 18);
 
     glEnd();
 
@@ -595,7 +628,7 @@ glRotatef(-45,0,0,1);
 
     glTexCoord2f(1.0, 0.0);
     glNormal3f(0, -1, 0);
-    glVertex3f(0, 27, 18);
+    glVertex3f(0, flameCounter + 22, 18);
 
     glEnd();
 
@@ -684,7 +717,6 @@ void draw_portal(World world) {
 
     glPopMatrix();
 
-
     glPushMatrix();
 
     glTranslated(0, 0, -0.955 * UNIT);
@@ -704,21 +736,64 @@ void draw_portal(World world) {
 void draw_entities(World world) {
     glNewList(displayList1, GL_COMPILE);
     glEnable(GL_TEXTURE_2D);
-//    for (int i = 0; i < ; ++i) {
-//
-//    }
-    draw_torch_for_light(world,0,0,0); //TODO
     draw_portal(world);
     glDisable(GL_TEXTURE_2D);
     glEndList();
 }
 
+void draw_torches(World world, double elapsedTime) {
+    if (flameCounter <= 0 && flameShouldAdd == 0) {
+        flameCounter += 1 * elapsedTime;;
+        flameShouldAdd = 1;
+    } else if (flameCounter <= 3.0 && flameShouldAdd == 1) {
+        flameCounter += 1 * elapsedTime;
+    } else if (flameCounter > 3.0 && flameShouldAdd == 1) {
+        flameShouldAdd = 0;
+        flameCounter -= 1 * elapsedTime;
+    } else if (flameCounter > 0.0 && flameShouldAdd == 0) {
+        flameCounter -= 1 * elapsedTime;
+    }
+    printf("%d, %f \n", flameShouldAdd, flameCounter);
 
-void draw_environment(World world) {
+
+    draw_torch_for_light(world, 1, 1, 2, flameCounter);
+
+    draw_torch_for_light(world, -3, 3, 1, flameCounter);
+
+    draw_torch_for_light(world, -3, -4, 0, flameCounter);
+    draw_torch_for_light(world, -7.5, -4, 0, flameCounter);
+    draw_torch_for_light(world, -7.5, -11, 0, flameCounter);
+    draw_torch_for_light(world, 4, -4, 2, flameCounter);
+    draw_torch_for_light(world, 3, 0, 1, flameCounter);
+    draw_torch_for_light(world, 0, -5, 1, flameCounter);
+    draw_torch_for_light(world, -1, -8, 1, flameCounter);
+    draw_torch_for_light(world, -10, -7, 0, flameCounter);
+    draw_torch_for_light(world, -9.5, 3, 1, flameCounter);
+    draw_torch_for_light(world, -9.5, 4, 0, flameCounter);
+    draw_torch_for_light(world, -1, 5, 2, flameCounter);
+    draw_torch_for_light(world, -16, 4, 3, flameCounter);
+    draw_torch_for_light(world, -13, 9, 1, flameCounter);
+    draw_torch_for_light(world, -9, 9, 1, flameCounter);
+
+    draw_torch_for_light(world, -4, 9, 1, flameCounter);
+    draw_torch_for_light(world, 1, 4, 0, flameCounter);
+    draw_torch_for_light(world, 6, -6, 0, flameCounter);
+    draw_torch_for_light(world, 8, -6, 0, flameCounter);
+    draw_torch_for_light(world, 10, -5.5, 2, flameCounter);
+    draw_torch_for_light(world, 10, -3.5, 2, flameCounter);
+
+
+}
+
+void draw_environment(World world, double elapsedTime) {
 	glEnable(GL_TEXTURE_2D);
 
     glCallList(displayList1);
     glCallList(displayList2);
+
+    draw_torches(world, elapsedTime);
+
+
     draw_vertical_wall(world.portalInside, 10, -5, -5);
 	GLfloat zeros[] = { 0, 0, 0 };
 	GLfloat ones[] = { 1, 1, 1 };
